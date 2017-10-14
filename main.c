@@ -19,24 +19,58 @@
 #include "ch_test.h"
 #include "chprintf.h"
 
+#define EVT_TURN_ON			((eventmask_t)(1 << 0))
+#define EVT_TURN_OFF		((eventmask_t)(1 << 1))
+
+thread_t *listener;
+
+static THD_WORKING_AREA(waThread2, 128);
+static THD_FUNCTION(Trigger, arg)
+{
+
+  (void)arg;
+  chRegSetThreadName("trigger");
+  eventmask_t events = 0;
+  while(true){
+	  chThdSleepMilliseconds(500);
+	  events = EVT_TURN_ON;
+	  chEvtSignal(listener, events);
+	  chThdSleepMilliseconds(2000);
+	  events = EVT_TURN_OFF;
+	  chEvtSignal(listener, events);
+  }
+
+}
+
+
+static void ProcessEvents(eventmask_t eventmask)
+{
+	/* Process events */
+	if(eventmask & EVT_TURN_ON) {
+		palSetPad(GPIOA, GPIOA_LED_GREEN);
+	} else
+	if(eventmask & EVT_TURN_OFF) {
+		palClearPad(GPIOA, GPIOA_LED_GREEN);
+	}
+}
+
 /*
  * Green LED blinker thread, times are in milliseconds.
  */
 static THD_WORKING_AREA(waThread1, 128);
-static THD_FUNCTION(Thread1, arg) {
+static THD_FUNCTION(ThreadBlinker, arg) {
 
   (void)arg;
+  eventmask_t eventmask;
+
   chRegSetThreadName("blinker");
-  while (true) {
-    palClearPad(GPIOA, GPIOA_LED_GREEN);
-    chThdSleepMilliseconds(200);
-    palSetPad(GPIOA, GPIOA_LED_GREEN);
-    chThdSleepMilliseconds(200);
-    palClearPad(GPIOA, GPIOA_LED_GREEN);
-    chThdSleepMilliseconds(200);
-    palSetPad(GPIOA, GPIOA_LED_GREEN);
-    chThdSleepMilliseconds(1000);
+
+  while(true) {
+  		eventmask = chEvtWaitAny(ALL_EVENTS);
+  		ProcessEvents(eventmask);
   }
+
+  chThdExit(0);
 }
 
 /*
@@ -55,14 +89,15 @@ int main(void) {
   chSysInit();
 
   /*
-   * Activates the serial driver 2 using the driver default configuration.
+   * Activates the serial driver 2 using the driver default configuration. MINICOM
    */
   sdStart(&SD2, NULL);
 
   /*
    * Creates the blinker thread.
    */
-  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
+  listener = chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, ThreadBlinker, NULL);
+  chThdCreateStatic(waThread2, sizeof(waThread2), NORMALPRIO, Trigger, NULL);
 
   /*
    * Normal main() thread activity, in this demo it does nothing except
