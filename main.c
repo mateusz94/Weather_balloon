@@ -18,6 +18,7 @@
 #include "hal.h"
 #include "ch_test.h"
 #include "chprintf.h"
+#include "shell_cfg.h"
 
 #define EVT_TURN_ON			((eventmask_t)(1 << 0))
 #define EVT_TURN_OFF		((eventmask_t)(1 << 1))
@@ -98,6 +99,8 @@ int main(void) {
    */
   listener = chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, ThreadBlinker, NULL);
   chThdCreateStatic(waThread2, sizeof(waThread2), NORMALPRIO, Trigger, NULL);
+
+  shell_init((BaseSequentialStream*)&SD2);
 
   /*
    * Normal main() thread activity, in this demo it does nothing except
