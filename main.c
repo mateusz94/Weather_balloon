@@ -49,9 +49,13 @@ static void ProcessEvents(eventmask_t eventmask)
 	/* Process events */
 	if(eventmask & EVT_TURN_ON) {
 		palSetPad(GPIOD, GPIOD_PIN13);
+		palSetPad(GPIOD, GPIOD_PIN14);
+		palSetPad(GPIOD, GPIOD_PIN15);
 	} else
 	if(eventmask & EVT_TURN_OFF) {
 		palClearPad(GPIOD, GPIOD_PIN13);
+		palClearPad(GPIOD, GPIOD_PIN14);
+		palClearPad(GPIOD, GPIOD_PIN15);
 	}
 }
 
