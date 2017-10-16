@@ -48,10 +48,10 @@ static void ProcessEvents(eventmask_t eventmask)
 {
 	/* Process events */
 	if(eventmask & EVT_TURN_ON) {
-		palSetPad(GPIOA, GPIOA_LED_GREEN);
+		palSetPad(GPIOA, GPIOD_PIN13);
 	} else
 	if(eventmask & EVT_TURN_OFF) {
-		palClearPad(GPIOA, GPIOA_LED_GREEN);
+		palClearPad(GPIOA, GPIOD_PIN13);
 	}
 }
 
@@ -110,6 +110,6 @@ int main(void) {
     if (!palReadPad(GPIOC, GPIOC_BUTTON))
       test_execute((BaseSequentialStream *)&SD2);
     chThdSleepMilliseconds(500);
-    chprintf((BaseSequentialStream*)&SD2, "Hello world!\n\r");
+    //chprintf((BaseSequentialStream*)&SD2, "Hello world!\n\r");
   }
 }
