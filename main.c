@@ -51,11 +51,13 @@ static void ProcessEvents(eventmask_t eventmask)
 		palSetPad(GPIOD, GPIOD_PIN13);
 		palSetPad(GPIOD, GPIOD_PIN14);
 		palSetPad(GPIOD, GPIOD_PIN15);
+		asm("bkpt #1");
 	} else
 	if(eventmask & EVT_TURN_OFF) {
 		palClearPad(GPIOD, GPIOD_PIN13);
 		palClearPad(GPIOD, GPIOD_PIN14);
 		palClearPad(GPIOD, GPIOD_PIN15);
+		asm("bkpt #1");
 	}
 }
 
