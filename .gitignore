@@ -1,0 +1,8 @@
+*~
+.dep
+.project
+.cproject
+.settins
+*.swp
+build
+*.zip
