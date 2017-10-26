@@ -6,3 +6,4 @@
 *.swp
 build
 *.zip
+.gdb_history

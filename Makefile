@@ -100,6 +100,8 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Other files (optional).
 include $(CHIBIOS)/test/rt/test.mk
 include $(CHIBIOS)/os/various/shell/shell.mk
+# My components.
+include $(CHIBIOS)/shell_cfg/shell_cfg.mk
 
 
 # Define linker script file here
@@ -119,7 +121,7 @@ CSRC = $(STARTUPSRC) \
        $(SHELLSRC) \
        $(STREAMSSRC) \
        $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
-       shell_cfg/shell_cfg.c \
+       $(SHELLCFGSRC) \
        main.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
@@ -156,7 +158,7 @@ INCDIR = $(CHIBIOS)/os/license \
          $(SHELLINC) $(STREAMSINC)\
          $(CHIBIOS)/os/hal/lib/streams/ \
          $(CHIBIOS)/os/various \
-         shell_cfg
+         $(SHELLCFGINC)
 
 #
 # Project, sources and paths
