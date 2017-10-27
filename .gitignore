@@ -2,7 +2,7 @@
 .dep
 .project
 .cproject
-.settins
+.settings
 *.swp
 build
 *.zip
