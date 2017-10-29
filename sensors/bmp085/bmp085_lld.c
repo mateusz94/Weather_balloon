@@ -45,7 +45,7 @@ BMP085_BUS_WR_RETURN_TYPE bus_write( unsigned char device_addr,
                                      unsigned char write_length)
 {
     i2cAcquireBus(&I2CD2);
-    status = i2cMasterTransmitTimeout(&I2CD2, device_addr, register_addr, write_length, NULL, 0, tmo);
+    status = i2cMasterTransmitTimeout(&I2CD2, device_addr, register_data, write_length, NULL, 0, tmo);
     i2cReleaseBus(&I2CD2);
     return status;
 }
