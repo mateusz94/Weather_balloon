@@ -101,8 +101,8 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 include $(CHIBIOS)/test/rt/test.mk
 include $(CHIBIOS)/os/various/shell/shell.mk
 # My components.
-include $(CHIBIOS)/shell_cfg/shell_cfg.mk
-
+# include $(CHIBIOS)/shell_cfg/shell_cfg.mk
+include $(CHIBIOS)/sensors/sensors.mk
 
 # Define linker script file here
 # LDSCRIPT= $(STARTUPLD)/STM32F411xE.ld
@@ -122,6 +122,7 @@ CSRC = $(STARTUPSRC) \
        $(STREAMSSRC) \
        $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
        $(SHELLCFGSRC) \
+       $(SENSORSSRC) \
        main.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
@@ -158,7 +159,8 @@ INCDIR = $(CHIBIOS)/os/license \
          $(SHELLINC) $(STREAMSINC)\
          $(CHIBIOS)/os/hal/lib/streams/ \
          $(CHIBIOS)/os/various \
-         $(SHELLCFGINC)
+         $(SHELLCFGINC) \
+         $(SENSORSINC)
 
 #
 # Project, sources and paths

@@ -7,3 +7,4 @@
 build
 *.zip
 .gdb_history
+.vscode
