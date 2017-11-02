@@ -51,7 +51,7 @@ int main(void) {
   // shell_init((BaseSequentialStream*)&SD2);
 
   /*
-   *
+   * Start Sensor_hub, place to handle all of signals from sensors
    */
   sensor_hub_start(); // temporary disabled to test i2c
 

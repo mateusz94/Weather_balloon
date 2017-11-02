@@ -6,7 +6,7 @@
  */
 
 #include "bmp085_lld.h"
-#include <ch.h>
+#include "ch.h"
 #include "hal.h"
 // #define BMP085_I2C_ADDR (0xEE >> 1)
 
@@ -31,11 +31,14 @@ static const I2CConfig i2cfg2 = {
 
 int bmp085_lld_init( bmp085_t* bmp085 )
 {
+    palSetPadMode(GPIOB, GPIOB_ARD_D15 , PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN) ;
+    palSetPadMode(GPIOB, GPIOB_ARD_D14, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN) ;
     bmp085->bus_write = bus_write;
     bmp085->bus_read = bus_read;
     bmp085->delay_msec = delay_msec;
-    i2cStart(&I2CD2, &i2cfg2);
+    i2cStart(&I2CD1, &i2cfg2);
     status = bmp085_init( bmp085 );
+    chThdSleepMilliseconds(100);
     return status;
 }
 
@@ -44,9 +47,12 @@ BMP085_BUS_WR_RETURN_TYPE bus_write( unsigned char device_addr,
                                      unsigned char* register_data, 
                                      unsigned char write_length)
 {
-    i2cAcquireBus(&I2CD2);
-    status = i2cMasterTransmitTimeout(&I2CD2, device_addr, register_data, write_length, NULL, 0, tmo);
-    i2cReleaseBus(&I2CD2);
+    static unsigned char tx[2];
+    tx[0] = register_addr;
+    tx[1] = *(register_data);
+    i2cAcquireBus(&I2CD1);
+    status = i2cMasterTransmitTimeout(&I2CD1, device_addr, tx, 2, NULL, 0, tmo);
+    i2cReleaseBus(&I2CD1);
     return status;
 }
  
@@ -55,9 +61,12 @@ BMP085_BUS_RD_RETURN_TYPE bus_read( unsigned char device_addr,
                                     unsigned char* register_data, 
                                     unsigned char read_length)
 {
-    i2cAcquireBus(&I2CD2);
-    status = i2cMasterReceiveTimeout(&I2CD2, device_addr, register_data, read_length, tmo);
-    i2cReleaseBus(&I2CD2);
+    static unsigned char tx[1];
+    tx[0] = register_addr;
+
+    i2cAcquireBus(&I2CD1);
+    status = i2cMasterTransmitTimeout(&I2CD1, device_addr, tx, 1, register_data, read_length, tmo);
+    i2cReleaseBus(&I2CD1);
     return status;
 }
 
