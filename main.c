@@ -20,7 +20,7 @@
 #include "chprintf.h"
 // #include "shell_cfg.h"
 #include "sensor_hub.h"
-
+#include "extconfig.h"
 
 
 
@@ -55,6 +55,10 @@ int main(void) {
    */
   sensor_hub_start(); // temporary disabled to test i2c
 
+  /*
+   * Start handling the interrupt
+   */
+  ext_config_start();
 
   /*
    * Normal main() thread activity, in this demo it does nothing except

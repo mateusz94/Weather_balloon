@@ -18,7 +18,7 @@ static bmp085_t bmp085;
  * Private functions
  */
 static bool sensor_hub_read_accel_data();
-static bool sensor_hub_read_press_data();
+static bool sensor_hub_read_press_data( long* );
 static void sensor_hub_process_events(eventmask_t eventmask);
 static bool sensor_hub_init();
 static THD_FUNCTION(sensor_hub_thread, arg);
@@ -44,9 +44,9 @@ thread_t *sensor_hub_get_thread_ptr()
 /*
  * Privates functions implementation
  */
-static bool sensor_hub_read_press_data()
+static bool sensor_hub_read_press_data( long *press)
 {
-
+	if ( bmp085_lld_get_pressure( press ) <= 0 ) return false;
 	return true;
 }
 
@@ -61,16 +61,19 @@ static bool sensor_hub_init()
 	if(bmp085_lld_init( &bmp085 ) <= 0) {
 		return false;
 	}
-
 	return true;
 }
 
 static void sensor_hub_process_events(eventmask_t eventmask)
 {
+	long press = 0;
 	if(eventmask & SENSOR_HUB_EVT_PRESS_NEW_DATA) {
+		if(sensor_hub_read_press_data(&press)) {
+			chprintf((BaseSequentialStream*)&SD2, "pressure: %ld\n\r", press);
+		} else {
+			chprintf((BaseSequentialStream*)&SD2, "sensor_hub_read_press_data failed!\n\r");
+		}
 		palSetPad(GPIOD, GPIOD_PIN13);
-		palSetPad(GPIOD, GPIOD_PIN14);
-		palSetPad(GPIOD, GPIOD_PIN15);
 	} else if(eventmask & SENSOR_HUB_EVT_ACCEL_NEW_DATA) {
 		palClearPad(GPIOD, GPIOD_PIN13);
 		palClearPad(GPIOD, GPIOD_PIN14);

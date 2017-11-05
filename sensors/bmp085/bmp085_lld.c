@@ -6,7 +6,6 @@
  */
 
 #include "bmp085_lld.h"
-#include "ch.h"
 #include "hal.h"
 // #define BMP085_I2C_ADDR (0xEE >> 1)
 
@@ -31,8 +30,8 @@ static const I2CConfig i2cfg2 = {
 
 int bmp085_lld_init( bmp085_t* bmp085 )
 {
-    palSetPadMode(GPIOB, GPIOB_ARD_D15 , PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN) ;
-    palSetPadMode(GPIOB, GPIOB_ARD_D14, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN) ;
+    // palSetPadMode(GPIOB, GPIOB_ARD_D15 , PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN) ;
+    // palSetPadMode(GPIOB, GPIOB_ARD_D14, PAL_MODE_ALTERNATE(4) | PAL_STM32_OTYPE_OPENDRAIN) ;
     bmp085->bus_write = bus_write;
     bmp085->bus_read = bus_read;
     bmp085->delay_msec = delay_msec;
@@ -40,6 +39,19 @@ int bmp085_lld_init( bmp085_t* bmp085 )
     status = bmp085_init( bmp085 );
     chThdSleepMilliseconds(100);
     return status;
+}
+
+int bmp085_lld_stop(bmp085_t* bmp085)
+{
+    i2cstop(&I2CD1);
+}
+
+bool bmp085_lld_get_pressure( long* res )
+{
+    unsigned long up = bmp085_get_up();
+    if(up < 0) return false;
+    *res = bmp085_get_pressure(up);
+    return true;
 }
 
 BMP085_BUS_WR_RETURN_TYPE bus_write( unsigned char device_addr, 
@@ -74,3 +86,4 @@ BMP085_MDELAY_RETURN_TYPE delay_msec( unsigned int delay)
 {
     chThdSleep(MS2ST(delay));
 }
+

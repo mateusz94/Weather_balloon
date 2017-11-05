@@ -144,7 +144,7 @@
 #define GPIOE_PIN3                  3U
 #define GPIOE_PIN4                  4U
 #define GPIOE_PIN5                  5U
-#define GPIOE_PIN6                  6U
+#define GPIOE_PIN6                  6U // BMP_EOC
 #define GPIOE_PIN7                  7U
 #define GPIOE_PIN8                  8U
 #define GPIOE_PIN9                  9U
@@ -426,8 +426,8 @@
  * PB5  - ARD_D4                    (input pullup).
  * PB6  - ARD_D10                   (input pullup).
  * PB7  - PIN7                      (input pullup).
- * PB8  - ARD_D15                   (input pullup).
- * PB9  - ARD_D14                   (input pullup).
+ * PB8  - ARD_D15                   (alternate pullup).
+ * PB9  - ARD_D14                   (alternate pullup).
  * PB10 - ARD_D6                    (input pullup).
  * PB11 - PIN11                     (input pullup).
  * PB12 - PIN12                     (input pullup).
@@ -443,8 +443,8 @@
                                      PIN_MODE_INPUT(GPIOB_ARD_D4) |         \
                                      PIN_MODE_INPUT(GPIOB_ARD_D10) |        \
                                      PIN_MODE_INPUT(GPIOB_PIN7) |           \
-                                     PIN_MODE_INPUT(GPIOB_ARD_D15) |        \
-                                     PIN_MODE_INPUT(GPIOB_ARD_D14) |        \
+                                     PIN_MODE_ALTERNATE(GPIOB_ARD_D15) |        \
+                                     PIN_MODE_ALTERNATE(GPIOB_ARD_D14) |        \
                                      PIN_MODE_INPUT(GPIOB_ARD_D6) |         \
                                      PIN_MODE_INPUT(GPIOB_PIN11) |          \
                                      PIN_MODE_INPUT(GPIOB_PIN12) |          \
@@ -459,8 +459,8 @@
                                      PIN_OTYPE_PUSHPULL(GPIOB_ARD_D4) |     \
                                      PIN_OTYPE_PUSHPULL(GPIOB_ARD_D10) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN7) |       \
-                                     PIN_OTYPE_PUSHPULL(GPIOB_ARD_D15) |    \
-                                     PIN_OTYPE_PUSHPULL(GPIOB_ARD_D14) |    \
+                                     PIN_OTYPE_OPENDRAIN(GPIOB_ARD_D15) |    \
+                                     PIN_OTYPE_OPENDRAIN(GPIOB_ARD_D14) |    \
                                      PIN_OTYPE_PUSHPULL(GPIOB_ARD_D6) |     \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN11) |      \
                                      PIN_OTYPE_PUSHPULL(GPIOB_PIN12) |      \
@@ -491,8 +491,8 @@
                                      PIN_PUPDR_PULLUP(GPIOB_ARD_D4) |       \
                                      PIN_PUPDR_PULLUP(GPIOB_ARD_D10) |      \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN7) |         \
-                                     PIN_PUPDR_PULLUP(GPIOB_ARD_D15) |      \
-                                     PIN_PUPDR_PULLUP(GPIOB_ARD_D14) |      \
+                                     PIN_PUPDR_FLOATING(GPIOB_ARD_D15) |      \
+                                     PIN_PUPDR_FLOATING(GPIOB_ARD_D14) |      \
                                      PIN_PUPDR_PULLUP(GPIOB_ARD_D6) |       \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN11) |        \
                                      PIN_PUPDR_PULLUP(GPIOB_PIN12) |        \

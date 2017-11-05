@@ -123,6 +123,7 @@ CSRC = $(STARTUPSRC) \
        $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
        $(SHELLCFGSRC) \
        $(SENSORSSRC) \
+       extconfig.c \
        main.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
@@ -160,7 +161,8 @@ INCDIR = $(CHIBIOS)/os/license \
          $(CHIBIOS)/os/hal/lib/streams/ \
          $(CHIBIOS)/os/various \
          $(SHELLCFGINC) \
-         $(SENSORSINC)
+         $(SENSORSINC) \
+         $(CHIBIOS)
 
 #
 # Project, sources and paths

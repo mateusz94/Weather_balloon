@@ -8,3 +8,4 @@ build
 *.zip
 .gdb_history
 .vscode
+doc
